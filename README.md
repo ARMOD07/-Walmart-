@@ -2,7 +2,10 @@
 # Walmart
 
 Walmart Sales Predictor This project is a full-stack machine learning application designed to predict weekly sales for Walmart stores. It includes:
+## Screenshots
+https://github.com/user-attachments/assets/031d7fa8-d308-4137-8787-2b067f40e559
 
+<img width="650" alt="image" src="https://github.com/user-attachments/assets/031d7fa8-d308-4137-8787-2b067f40e559" />
 ## Demo
  
 
@@ -130,10 +133,7 @@ Sends user input to the API using JavaScript fetch
 
 Displays the prediction dynamically on the page
  
-## Screenshots
-https://github.com/user-attachments/assets/031d7fa8-d308-4137-8787-2b067f40e559
 
-<img width="650" alt="image" src="https://github.com/user-attachments/assets/031d7fa8-d308-4137-8787-2b067f40e559" />
  
 
 ## 📛 Badges
