@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Walmart Sales Predictor</title>
+  <style>
+    :root {
+      --primary: #4a90e2;
+      --secondary: #f4f6fa;
+      --accent: #a6ba52;
+      --text-dark: #333;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      padding: 2rem;
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.01);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      font-size: 2.8rem;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 0.6rem;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
+    input[type="number"],
+    input[type="date"] {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(166, 186, 82, 0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+    }
+
+    button {
+      grid-column: span 2;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    button:hover {
+      background: #3b7cc1;
+      box-shadow: 0 6px 18px rgba(74, 144, 226, 0.4);
+    }
+
+    #result {
+      grid-column: span 2;
+      margin-top: 2rem;
+      background: #e6f0ff;
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: var(--radius);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      button {
+        grid-column: span 1;
+      }
+      #result {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📈 Walmart Sales Predictor</h1>
+    <form id="salesForm">
+      <div class="form-group">
+        <label for="Store">Store ID</label>
+        <input type="number" id="Store" name="Store" required />
+      </div>
+      <div class="form-group">
+        <label for="Dept">Department</label>
+        <input type="number" id="Dept" name="Dept" required />
+      </div>
+      <div class="form-group">
+        <label for="Temperature">Temperature (°F)</label>
+        <input type="number" id="Temperature" name="Temperature" step="0.1" required />
+      </div>
+      <div class="form-group">
+        <label for="Fuel_Price">Fuel Price ($)</label>
+        <input type="number" id="Fuel_Price" name="Fuel_Price" step="0.01" required />
+      </div>
+      <div class="form-group">
+        <label for="CPI">Consumer Price Index</label>
+        <input type="number" id="CPI" name="CPI" step="0.01" required />
+      </div>
+      <div class="form-group">
+        <label for="Unemployment">Unemployment Rate (%)</label>
+        <input type="number" id="Unemployment" name="Unemployment" step="0.1" required />
+      </div>
+      <div class="form-group">
+        <label for="Date">Date</label>
+        <input type="date" id="Date" name="Date" required />
+      </div>
+      <div class="form-group">
+        <label for="IsHoliday">Is it a Holiday?</label>
+        <div class="checkbox-group">
+          <input type="checkbox" id="IsHoliday" name="IsHoliday" />
+          <label for="IsHoliday" style="margin: 0;">Yes</label>
+        </div>
+      </div>
+
+      <button type="submit">🚀 Predict Sales</button>
+      <div id="result"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('salesForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const resultElement = document.getElementById('result');
+      resultElement.innerHTML = '⏳ Calculating prediction...';
+
+      const formData = new FormData(event.target);
+      const data = {
+        Store: parseInt(formData.get('Store')),
+        Dept: parseInt(formData.get('Dept')),
+        Temperature: parseFloat(formData.get('Temperature')),
+        Fuel_Price: parseFloat(formData.get('Fuel_Price')),
+        CPI: parseFloat(formData.get('CPI')),
+        Unemployment: parseFloat(formData.get('Unemployment')),
+        IsHoliday: formData.get('IsHoliday') === 'on',
+        Date: formData.get('Date')
+      };
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    
+        if (!response.ok) throw new Error('Server error');
+        
+        const result = await response.json();
+        
+        // Ajoute un console.log ici pour afficher la réponse
+        console.log(result);  // Vérifie la réponse du serveur
+    
+        if (!result.Weekly_Sales_Predicted) {
+          throw new Error('Predicted sales not found in response');
+      }
+      
+    
+      resultElement.innerHTML = `💰 Predicted Weekly Sales: $${result.Weekly_Sales_Predicted.toLocaleString()}`;
+
+    } catch (error) {
+        resultElement.innerHTML = `❌ Error: ${error.message}`;
+        resultElement.style.color = '#dc3545';
+    }
+    
+    });
+  </script>
+</body>
+</html>
