@@ -50,20 +50,7 @@ walmart-sales-predictor/
 ```
 
  
-
-📂 Project Structure
-walmart-sales-predictor/
-├── app.py                  # 🚀 FastAPI backend
-├── sales_model.pkl         # 🤖 Trained ML model (RandomForestRegressor)
-├── notebooks.ipynb         # 📓 Jupyter Notebook (EDA + Training)
-│
-├── backend_api/            # 📦 Backend folder
-│   └── static/
-│       └── index.html      # 🌐 Frontend HTML + JavaScript
-│
-├── requirements.txt        # 📄 Python dependencies
-├── venv/                   # 🧪 (Optional) Virtual environment
-└── README.md               # 📘 Project documentation
+ 
 
 ## Installation
 
